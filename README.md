@@ -1,7 +1,7 @@
 # Python Core Homework 08
 
 Solution for Python Core homework assignment, module 8.
-This project contains a CLI contact assistant bot and address book models with OOP architecture.
+This project contains a CLI contact assistant bot with OOP address book models and persistent storage via pickle (load on start, save on exit).
 
 ## Quick Start
 
@@ -60,6 +60,7 @@ Interactive console application for contact management with input validation and
 - `colorama` for colored terminal messages
 - Validation for names and phones (local 10 digits format)
 - Dictionary-based contact storage
+- `pickle`-based persistence (`task/storage.py`)
 
 **Available Commands:**
 
@@ -88,7 +89,7 @@ python -m task.main
 REM In interactive mode:
 >>> add John 0501234567
 >>> phone John
->>> change John 0509876543
+>>> change John 0501234567 0509876543
 >>> all
 >>> close
 ```
@@ -114,13 +115,15 @@ OOP-based address book implementation in `task/models/` package with proper enca
 - ✅ Name validation (letters, spaces, hyphens, apostrophes)
 - ✅ Centralized error messages in constants
 - ✅ Full inheritance chain (Field → Name/Phone)
+- ✅ Persistent storage with `pickle` (`addressbook.pkl`)
+- ✅ Safe startup fallback: if save file is missing/corrupted, app loads an empty address book
 
 **Test File:**
 
-Run [test_address_book_package.py](test_address_book_package.py) to see the implementation matching homework requirements:
+Run [test_add_users.py](test_add_users.py) to validate core command flow:
 
 ```cmd
-python test_address_book_package.py
+python test_add_users.py
 ```
 
 ## Project Structure
@@ -158,8 +161,9 @@ goit-pycore-hw-08/
 │   ├── main.py                 # CLI bot entry point
 │   ├── message_texts.py        # Centralized message constants
 │   ├── messages.py             # Message formatting utilities
+│   ├── storage.py              # Pickle save/load helpers
 │   └── validators.py           # Input validation functions
-├── test_add_users.py               # Comprehensive integration test
+├── test_add_users.py           # Comprehensive integration test
 ├── requirements.txt            # Dependencies
 └── README.md                   # Documentation
 ```
@@ -173,6 +177,7 @@ goit-pycore-hw-08/
 - **models/** — Data structures with validation and business logic
 - **validators.py** — Pure validation functions (reusable across CLI and models)
 - **messages.py** — Formatted user-facing messages with colors
+- **storage.py** — AddressBook persistence (load/save with pickle)
 - **main.py** — CLI event loop
 
 ### Decorator Stack Pattern
@@ -218,6 +223,7 @@ birthdays                    # Show upcoming (next 7 days)
 - **Custom Exceptions** — exception hierarchy for clear error handling
 - **Decorators** — for error handling and output formatting
 - **colorama** — colored terminal output
+- **pickle** — serialization/deserialization for persistent storage
 - **re (regular expressions)** — for validation and text parsing
 - **UserDict** — proper dictionary inheritance for AddressBook
 - **Package Structure** — modular organization with `__init__.py` exports

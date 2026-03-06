@@ -2,12 +2,12 @@ from colorama import init
 
 from task.input_parser import parse_input
 from task.handlers import execute_command
-from task.models import AddressBook
 from task.messages import (
     welcome_message,
     goodbye_message,
     prompt_for_command,
 )
+from task.storage import load_data, save_data
 
 # Initialize colorama for Windows compatibility
 init(autoreset=True)
@@ -33,7 +33,7 @@ def main() -> None:
     The bot runs in an infinite loop until the user enters "close" or "exit".
     """
 
-    book = AddressBook()
+    book = load_data()
 
     print(welcome_message())
 
@@ -59,6 +59,8 @@ def main() -> None:
     except (KeyboardInterrupt, EOFError):
         print()
         print(goodbye_message())
+    finally:
+        save_data(book)
 
 
 # For testing purposes
